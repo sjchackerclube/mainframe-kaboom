@@ -1,6 +1,6 @@
 <mm_project serial_port="COM1" board="Arduino Mega (ATmega1280)" programmer="USBasp" includePaths="" libPaths="" libs="" default="yes" useCodeAutomation="yes" linkPrintfVersion="1" serialPortSpeed="" >
   <files>
-    <file name="ctf_bomb_main.h" open="yes" />
+    <file name="ctf_bomb_main.h" open="no" />
     <file name="ctf_bomb_main.cpp" open="yes" />
   </files>
   <extras>
