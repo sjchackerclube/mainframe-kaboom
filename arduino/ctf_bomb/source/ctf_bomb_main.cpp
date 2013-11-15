@@ -44,7 +44,7 @@
 //LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 //rs, en, d4, d5, d6, d7
-// teeste
+// teste
 LiquidCrystal lcd(9, 8, 10, 11, 12, 13);
 
 void setup() {
