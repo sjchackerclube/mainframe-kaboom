@@ -72,6 +72,24 @@ unsigned char Comm::ReadCommands(void)
 				if (header[1] == 'A') {
 					cmd = CMD_SET_SEQUENCE;
 					strcpy(sequenceString, "");
+					int l = strlen(sequenceString);
+					while (Serial.available() > 0) {
+						unsigned char inByte = Serial.read();						
+						if (inByte == '|') {
+							break;
+						} else {
+							sequenceString[l] = inByte;
+							sequenceString[l+1] = 0;		
+							++l;
+							if (l >= MAX_SEQUENCE_SIZE * 2) {
+								break;
+							}
+						}
+						delay(10);
+					}
+					Serial.print("Sequence:[");
+					Serial.print(sequenceString);
+					Serial.print("]");
 				} else if (header[1] == 'B') {					
 					cmd = CMD_START;					
 				} else if (header[1] == 'C') {

@@ -128,14 +128,15 @@ void Config::SetSequence (char * const text)
 		seqSize = 0;
 	}	
 	
-	seqSize = strlen(text) / 2 + 1;
+	seqSize = strlen(text) / 2;
 	if (seqSize > MAX_SEQUENCE_SIZE) {
 		seqSize = MAX_SEQUENCE_SIZE;
 	}
 	
 	seq = new unsigned char[seqSize];	
 	memset(seq, 0, seqSize);
-	seq[0] = 0x3F; // First position is always all wires connected	
+	unsigned char value = 0x3F;
+	//seq[0] = value; // First position is always all wires connected	
 		
 	// small-memory-footprint algorithm to convert the string sequence into a numeric sequence
 	while (pos < strlen(text)) {	
@@ -143,14 +144,15 @@ void Config::SetSequence (char * const text)
 			break;
 		}
 		
-		unsigned char lastSeq = seq[0];
+		///unsigned char lastSeq = seq[0];
 		unsigned char bit = text[pos + 1] - '0';
 		
 		if (text[pos] == '+') {
-			seq[pos / 2] = lastSeq | (1 << bit);
+			seq[pos / 2] = value | (1 << bit);
 		} else {
-			seq[pos / 2] = lastSeq & (~(1 << bit));
-		}			
+			seq[pos / 2] = value & (~(1 << bit));
+		}	
+		value = seq[pos / 2];
 		
 		pos += 2;		
 	}	

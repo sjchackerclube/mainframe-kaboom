@@ -15,6 +15,9 @@ Clock clock;
 void Clock::Start(void)
 {
 	time = millis();
+	
+	Serial.print("Resetando tempo:");
+	Serial.println(GetTimeSeconds());
 }
 
 //-------------------------------------------------------------------

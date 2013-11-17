@@ -63,6 +63,9 @@ bool Player::Start (void)
 	lastPrintedTime = 0;
 	wiringStatus = 63;
 	
+	Serial.print("time:");
+	Serial.println(time);
+	
 	return IsReady();
 	
 }
@@ -92,23 +95,29 @@ bool Player::WaitGetReady(void)
 		if (IsReady()) {
 			status = PLAYER_STATUS_WAITING;
 			Start();
+			
+			return true;
 		} else {
 			lcd->setCursor(0, 0);
 			lcd->print("Fio desconect.:       "); 
-		
-			char text[17] = "";		
+			lcd->setCursor(0, 1);
+			lcd->print("                      "); 
+			lcd->setCursor(0, 1);
 			for (int i=0; i < 6; i++) {		
 				unsigned char w = digitalRead(wirePins[i]);
 				if (w != 0) {
-					sprintf(&(text[i*2]), "%d            ", i);
+					lcd->print(i);
+				} else {
+					lcd->print(" ");
 				}
+				lcd->print(" ");
 			}		
-			lcd->setCursor(0, 1);
-			lcd->print(text);				
 			
 			delay(500);
+			
+			return false;
 		}
-		return false;
+		
 	} else {	
 		return true;
 	}
@@ -122,12 +131,18 @@ void Player::Update(void)
 		return;
 	}
 	
+	bool refreshMsg = false;
+	
 	unsigned char lastWiringStatus = wiringStatus;			
 	unsigned char lastMSg = msg;
 	if (status == PLAYER_STATUS_PLAYING) {		
 		// Check if player changed any wire		
 		wiringStatus = ReadWiring();		
 		if (wiringStatus != lastWiringStatus) {
+			//Serial.print(">>");
+			//Serial.print(wiringStatus);
+			//Serial.print(",");
+			//Serial.println(config.GetSequenceItem(step));
 			unsigned char prevStatus = 63;
 			if (step > 0) {
 				prevStatus = config.GetSequenceItem(step-1);
@@ -138,6 +153,11 @@ void Player::Update(void)
 				if (config.GetSequenceItem(step) == wiringStatus) {
 					++step;
 					msg = MSG_CORRECT;
+					refreshMsg = true;
+					//Serial.print("::");
+					//Serial.print(step);
+					//Serial.print(",");
+					//Serial.println(config.GetSequenceSize());
 					if (step >= config.GetSequenceSize()) {
 						status = PLAYER_STATUS_WON;					
 						msg = MSG_WON;
@@ -164,7 +184,7 @@ void Player::Update(void)
 	} 
 	
 	// if player message shall change, let's print it on 
-	if ((lastMSg != msg) || (status == PLAYER_STATUS_NOT_READY)) {
+	if (((lastMSg != msg) || (status == PLAYER_STATUS_NOT_READY)) || (refreshMsg)) {
 		lcd->setCursor(0, 0);
 		lcd->print("                ");			
 		lcd->setCursor(0, 0);
@@ -198,37 +218,42 @@ void Player::Update(void)
 		} else {
 			char text[17] = "";		
 			for (int i=0; i < 6; i++) {		
-				unsigned char w = digitalRead(wirePins[i]);
+				char w = digitalRead(wirePins[i]);
 				if (w != 0) {
-					sprintf(&(text[i*2]), "%d            ", i);
+					Serial.print(i);
+					strcat(text, &w);//sprintf(&(text[i*2]), "%d", i);
+					strcat(text, " ");
 				}
-			}		
+			}	
+			Serial.println("");
 			lcd->setCursor(0, 1);
 			lcd->print(text);				
 		}
 	} else {	
-		if ( (millis() - lastPrintedTime > 800) || (msg == MSG_OPS) ) {
-			long t = time - clock.GetTimeSeconds();
-			lastPrintedTime = millis();
-			if (t > 0) { 
-				int h,m,s;
-				h = t / 3600;
-				t = t - (h * 3600);
-				m = t / 60;
-				s = t - (m * 60);
-				char text[17];
-				sprintf(text, "%02d:%02d:%02d", h, m, s);
-				lcd->setCursor(0, 1);
-				lcd->print(text);				
-			} else {
-				lcd->setCursor(0, 1);
-				lcd->print("KABOOM!!!       ");				
-			}
-		} 		
-		/*char text[17];
-		sprintf(text, "%d:%d:%d:%d", time + 10, wiringStatus, config.GetSequenceItem(step), config.GetSequenceSize());
-		lcd->setCursor(0, 1);
-		lcd->print(text);				*/
+		if (status != PLAYER_STATUS_WON) {
+			if ( (millis() - lastPrintedTime > 800) || (msg == MSG_OPS) ) {
+				long t = time - clock.GetTimeSeconds();
+				lastPrintedTime = millis();
+				if (t > 0) { 
+					int h,m,s;
+					h = t / 3600;
+					t = t - (h * 3600);
+					m = t / 60;
+					s = t - (m * 60);
+					char text[17];
+					sprintf(text, "%02d:%02d:%02d", h, m, s);
+					lcd->setCursor(0, 1);
+					lcd->print(text);				
+				} else {
+					lcd->setCursor(0, 1);
+					lcd->print("KABOOM!!!       ");				
+				}
+			} 		
+			/*char text[17];
+			sprintf(text, "%d:%d:%d:%d", time + 10, wiringStatus, config.GetSequenceItem(step), config.GetSequenceSize());
+			lcd->setCursor(0, 1);
+			lcd->print(text);				*/
+		}
 	}		
 }
 

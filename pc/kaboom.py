@@ -68,7 +68,7 @@ class Kaboom(threading.Thread):
         if self.__connected:
             self.__sequence = sequence
             #self.__serialPort.write("*A*")  # set sequence
-            self.__serialPort.writeline("*B*\n")  # start new game
+            self.__serialPort.write("*B*" + sequence+ "|\n")  # start new game
 
     def get_status(self):
         if self.__connected:
@@ -170,7 +170,7 @@ if __name__ == '__main__':
     print k.get_status()
     for item in k.players:
         print item.status,", ", item.wiring, ", ", item.step
-    sleep(2)
-    k.disconnect()
+    #sleep(2)
+    #k.disconnect()
     print "fim"
 

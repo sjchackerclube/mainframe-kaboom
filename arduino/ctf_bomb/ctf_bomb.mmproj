@@ -1,4 +1,4 @@
-<mm_project serial_port="COM14" board="Arduino Mega (ATmega1280)" programmer="" includePaths="" libPaths="" libs="" default="yes" useCodeAutomation="yes" linkPrintfVersion="1" serialPortSpeed="" >
+<mm_project serial_port="COM10" board="Arduino Mega (ATmega1280)" programmer="" includePaths="" libPaths="" libs="" default="yes" useCodeAutomation="yes" linkPrintfVersion="1" serialPortSpeed="" >
   <files>
     <file name="ctf_bomb_main.h" open="no" />
     <file name="ctf_bomb_main.cpp" open="yes" />
@@ -7,7 +7,7 @@
     <file name="kaboom_definitions.h" open="yes" />
     <file name="game.h" open="no" />
     <file name="game.cpp" open="yes" />
-    <file name="game_clock.cpp" open="no" />
+    <file name="game_clock.cpp" open="yes" />
     <file name="game_clock.h" open="no" />
     <file name="config.h" open="no" />
     <file name="config.cpp" open="yes" />
