@@ -1,0 +1,11 @@
+<mm_project serial_port="COM14" board="Arduino Mega (ATmega1280)" programmer="" includePaths="" libPaths="" libs="" default="no" useCodeAutomation="yes" linkPrintfVersion="1" serialPortSpeed="" >
+  <files>
+    <file name="display_main.h" open="no" />
+    <file name="Display_main.cpp" open="no" />
+  </files>
+  <extras>
+  </extras>
+  <externals>
+    <external name="D:\Programas\developer\arduino\ide\arduino-1.0.5\libraries\LiquidCrystal\LiquidCrystal.cpp" />
+  </externals>
+</mm_project>
