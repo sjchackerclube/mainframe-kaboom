@@ -140,14 +140,15 @@ class GUI:
         self.link_button(outrect, self.LEFT, self.toggle_active)
 
     def draw_players(self):
-        return
         positions = [
-          (100, 300), (100, 450), (100, 600),
-          (550, 300), (550, 450), (550, 600)
+          (180, 269), (180, 433), (180, 597),
+          (528, 269), (528, 433), (528, 597)
         ]
-        width, height = 350, 100
-        for x, y in positions:
-            self.rc.fill((x, y, width, height), self.BLACK)
+        w, h = 292, 106
+        m = 20
+        rects = [(x + m, y + m, w - m * 2, h - m * 2) for x, y in positions]
+        for rect in rects:
+            self.rc.draw_rect(rect, self.BLUE)
 
     def draw_clock(self, clock_str="--:--:-"):
         assert len(clock_str) == 7
