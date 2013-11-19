@@ -147,9 +147,9 @@ class GUI:
         ]
         w, h = 287, 104
         m = 15
-        bar_h = (h - m * 2) // 2 - 5
-        progress_rects = [[x + m, y + m, w - m * 2, bar_h] for x, y in positions]
-        time_rects = [[x + m, y + m + bar_h + 10, w - m * 2, bar_h] for x, y in positions]
+        bar_w, bar_h = w - m * 2, (h - m * 2) // 2 - 5
+        progress_rects = [[x + m, y + m, bar_w, bar_h] for x, y in positions]
+        time_rects = [[x + m, y + m + bar_h + 10, bar_w, bar_h] for x, y in positions]
         for rect in progress_rects:
             self.rc.draw_rect(rect, self.GREEN)
             p = random.random()
@@ -157,6 +157,9 @@ class GUI:
                 rect[0] += int(rect[2] * (1 - p))
             rect[2] = int(rect[2] * p)
             self.rc.fill(rect, self.GREEN)
+            step = bar_w // 10
+            for i in range(9):
+                self.rc.fill((rect[0] + step * (i + 1) - 1, rect[1] + 1, 2, rect[3] - 2), self.bg)
         for rect in time_rects:
             self.rc.draw_rect(rect, self.RED)
             t = random.random()
@@ -164,6 +167,9 @@ class GUI:
                 rect[0] += int(rect[2] * (1 - t))
             rect[2] = int(rect[2] * t)
             self.rc.fill(rect, self.RED)
+            step = bar_w // 10
+            for i in range(9):
+                self.rc.fill((rect[0] + step * (i + 1) - 1, rect[1] + 1, 2, rect[3] - 2), self.bg)
 
     def draw_clock(self, clock_str="--:--:-"):
         assert len(clock_str) == 7
