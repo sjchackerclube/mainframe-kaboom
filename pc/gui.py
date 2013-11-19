@@ -97,7 +97,7 @@ class GUI:
 
     def load_samples(self):
         self.samples = dict(
-            boing=sdl2.sdlmixer.Mix_LoadWAV(b"media/sound/boing.ogg")
+            cs_bomb_planted=sdl2.sdlmixer.Mix_LoadWAV(b"media/sound/cs-bomb-planted.ogg")
         )
 
     def play_sample(self, sample, volume=1):
@@ -180,14 +180,13 @@ class GUI:
         """
         if keycode == sdl2.keycode.SDLK_q:
             self.running = False
-        elif keycode == sdl2.keycode.SDLK_w:
-            self.play_sample('boing')
 
     def toggle_active(self):
         if self.active:
             self.draw_clock()
         else:
             self.start_time = datetime.datetime.now()
+            self.play_sample('cs_bomb_planted')
         self.active = not self.active
         self.draw_toggle_button()
 
