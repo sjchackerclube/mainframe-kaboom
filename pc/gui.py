@@ -152,7 +152,6 @@ class GUI:
         time_rects = [[x + m, y + m + bar_h + 10, bar_w, bar_h] for x, y in positions]
         for rect in progress_rects:
             p = random.random()
-            p = 1
             self.rc.draw_rect(rect, self.GREEN)
             bar_x, bar_y = rect[:2]
             if rect[0] > 500:
@@ -164,7 +163,6 @@ class GUI:
                 self.rc.fill((bar_x + step * (i + 1) + 2, bar_y + 1, 3, rect[3] - 2), self.bg)
         for rect in time_rects:
             t = random.random()
-            t = 1
             self.rc.draw_rect(rect, self.RED)
             bar_x, bar_y = rect[:2]
             if rect[0] > 500:
