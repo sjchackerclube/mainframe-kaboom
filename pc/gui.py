@@ -8,6 +8,7 @@ Requirements:
  - PySDL2
 """
 
+import random
 import datetime
 import atexit
 
@@ -141,14 +142,28 @@ class GUI:
 
     def draw_players(self):
         positions = [
-          (180, 269), (180, 433), (180, 597),
-          (528, 269), (528, 433), (528, 597)
+          (185, 270), (185, 434), (185, 598),
+          (528, 270), (528, 434), (528, 598)
         ]
-        w, h = 292, 106
-        m = 20
-        rects = [(x + m, y + m, w - m * 2, h - m * 2) for x, y in positions]
-        for rect in rects:
-            self.rc.draw_rect(rect, self.BLUE)
+        w, h = 287, 104
+        m = 15
+        bar_h = (h - m * 2) // 2 - 5
+        progress_rects = [[x + m, y + m, w - m * 2, bar_h] for x, y in positions]
+        time_rects = [[x + m, y + m + bar_h + 10, w - m * 2, bar_h] for x, y in positions]
+        for rect in progress_rects:
+            self.rc.draw_rect(rect, self.GREEN)
+            p = random.random()
+            if rect[0] > 500:
+                rect[0] += int(rect[2] * (1 - p))
+            rect[2] = int(rect[2] * p)
+            self.rc.fill(rect, self.GREEN)
+        for rect in time_rects:
+            self.rc.draw_rect(rect, self.RED)
+            t = random.random()
+            if rect[0] > 500:
+                rect[0] += int(rect[2] * (1 - t))
+            rect[2] = int(rect[2] * t)
+            self.rc.fill(rect, self.RED)
 
     def draw_clock(self, clock_str="--:--:-"):
         assert len(clock_str) == 7
