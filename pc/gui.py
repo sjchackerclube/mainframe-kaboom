@@ -23,7 +23,7 @@ def rect_has_point(rect, point):
     return rx <= px < (rx + rw) and ry <= py < (ry + rh)
 
 class GUI:
-    bg = 0x00002A
+    bg = 0x000018
     width, height = 1000, 750
     bomb_time = datetime.timedelta(minutes=15)
     nchannels = 16
